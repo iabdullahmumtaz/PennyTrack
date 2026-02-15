@@ -1,0 +1,21 @@
+services:
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - pennytrack_mongo:/data/db
+
+  api:
+    build: ./backend
+    ports:
+      - "4001:4001"
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/pennytrack
+      JWT_SECRET: dev-secret
+      PORT: 4001
+    depends_on:
+      - mongo
+
+volumes:
+  pennytrack_mongo:
